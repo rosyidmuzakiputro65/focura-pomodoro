@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'app.dart';
+import 'core/config/backend_info.dart';
 import 'core/config/firebase_config.dart';
 import 'core/services/focus_audio_service.dart';
 import 'core/services/notification_service_factory.dart';
@@ -79,25 +81,31 @@ class _Backend {
 /// selain itu database lokal Hive (aplikasi tetap bisa dipakai tanpa internet
 /// atau saat dijalankan tanpa `firebase_config.json`).
 Future<_Backend> _createBackend() async {
-  if (FirebaseConfig.isConfigured) {
+  final useFirebase =
+      FirebaseConfig.isConfigured ||
+      (!kIsWeb && defaultTargetPlatform == TargetPlatform.android);
+  if (useFirebase) {
     try {
-      await Firebase.initializeApp(options: FirebaseConfig.currentPlatform);
+      await _initializeFirebase();
       final firestore = FirebaseFirestore.instance;
       // Cache offline Firestore (otomatis di Android/iOS, perlu diaktifkan di web).
       firestore.settings = const Settings(
         persistenceEnabled: true,
         cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
       );
-      debugPrint('Backend: Firebase (${FirebaseConfig.projectId})');
+      BackendInfo.name = 'Firebase (${Firebase.app().options.projectId})';
+      debugPrint('Backend: ${BackendInfo.name}');
       return _Backend(
         FirebaseAuthRepository(auth: FirebaseAuth.instance, firestore: firestore),
         FirestoreTaskRepository(firestore),
         FirestoreSessionRepository(firestore),
       );
     } catch (error) {
+      BackendInfo.error = '$error';
       debugPrint('Firebase gagal diinisialisasi, memakai database lokal: $error');
     }
   }
+  BackendInfo.name = 'Lokal (Hive)';
   debugPrint('Backend: database lokal (Hive)');
   final localAuth = LocalAuthRepository(
     usersBox: LocalDatabase.box(LocalDatabase.usersBox),
@@ -109,4 +117,19 @@ Future<_Backend> _createBackend() async {
     LocalTaskRepository(LocalDatabase.box(LocalDatabase.tasksBox)),
     LocalSessionRepository(LocalDatabase.box(LocalDatabase.focusSessionsBox)),
   );
+}
+
+/// Android: utamakan google-services.json (plugin Google Services).
+/// Jika gagal, pakai konfigurasi dari --dart-define-from-file.
+Future<void> _initializeFirebase() async {
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+    try {
+      await Firebase.initializeApp();
+      return;
+    } catch (error) {
+      debugPrint('initializeApp() tanpa options gagal: $error');
+      if (!FirebaseConfig.isConfigured) rethrow;
+    }
+  }
+  await Firebase.initializeApp(options: FirebaseConfig.currentPlatform);
 }

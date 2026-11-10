@@ -65,3 +65,7 @@ firebase_config.json
 # Backup lokal sebelum revisi
 _backup_sebelum_revisi/
 _logs/
+
+# File APK hasil build
+*.apk
+*.aab

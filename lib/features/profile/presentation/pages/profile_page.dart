@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/config/backend_info.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/l10n/app_strings.dart';
 import '../../../../core/widgets/responsive_center.dart';
@@ -141,6 +142,18 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
+                Text(
+                  'Backend: ${BackendInfo.name}'
+                  '${BackendInfo.error == null ? '' : '\n${BackendInfo.error}'}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: BackendInfo.error == null
+                        ? AppColors.textSecondary
+                        : Colors.redAccent,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Text(
                   s.footer,
                   textAlign: TextAlign.center,
