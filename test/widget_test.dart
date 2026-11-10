@@ -33,6 +33,9 @@ class _NeverCalledAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<AppUser> loginWithGoogle() => throw UnimplementedError();
+
+  @override
   Future<void> logout() async {}
 
   @override
@@ -75,6 +78,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.text('Masuk dengan Google'), findsOneWidget);
     await tester.tap(find.text('Masuk'));
     await tester.pump();
 

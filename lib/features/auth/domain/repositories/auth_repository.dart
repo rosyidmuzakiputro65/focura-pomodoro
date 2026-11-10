@@ -13,5 +13,8 @@ abstract class AuthRepository {
 
   Future<AppUser> login({required String email, required String password});
 
+  /// Masuk dengan akun Google.
+  Future<AppUser> loginWithGoogle();
+
   Future<void> logout();
 }

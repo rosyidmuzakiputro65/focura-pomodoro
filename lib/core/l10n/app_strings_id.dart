@@ -65,6 +65,10 @@ class AppStringsId extends AppStrings {
   @override
   String fillDemoAccount(String email) => 'Isi akun demo ($email)';
   @override
+  String get signInWithGoogle => 'Masuk dengan Google';
+  @override
+  String get orDivider => 'atau';
+  @override
   String get createAccount => 'Buat akun';
   @override
   String get registerSubtitle => 'Mulai perjalanan fokusmu bersama Focura.';
@@ -377,6 +381,16 @@ class AppStringsId extends AppStrings {
     AppError.wrongCredentials => 'Email atau password salah',
     AppError.notOwner => 'Kamu tidak berhak mengubah data ini',
     AppError.notLoggedIn => 'Silakan masuk terlebih dahulu',
+    AppError.tooManyAttempts =>
+      'Terlalu banyak percobaan. Tunggu sebentar lalu coba lagi',
+    AppError.permissionDenied => 'Akses ke database ditolak',
+    AppError.signInCancelled => 'Masuk dibatalkan',
+    AppError.googleSignInFailed =>
+      'Gagal masuk dengan Google. Coba lagi atau gunakan email',
+    AppError.googleSignInUnavailable =>
+      'Masuk dengan Google butuh koneksi ke Firebase',
+    AppError.authProviderDisabled =>
+      'Login Email/Password belum diaktifkan di Firebase Console',
     AppError.taskNotFound => 'Tugas tidak ditemukan',
     AppError.networkTimeout => 'Koneksi ke server terlalu lama',
     AppError.networkServer => 'Server sedang bermasalah, coba lagi nanti',

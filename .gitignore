@@ -59,6 +59,8 @@ android/local.properties
 google-services.json
 GoogleService-Info.plist
 firebase_options.dart
+# Konfigurasi Firebase dibaca lewat --dart-define-from-file (lihat README)
+firebase_config.json
 
 # Backup lokal sebelum revisi
 _backup_sebelum_revisi/

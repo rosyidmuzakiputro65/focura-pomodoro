@@ -123,6 +123,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: _submit,
                 ),
               ),
+              BlocBuilder<AuthCubit, AuthState>(
+                buildWhen: (p, c) => p.isSubmitting != c.isSubmitting,
+                builder: (context, state) => GoogleSignInSection(
+                  label: s.signInWithGoogle,
+                  dividerText: s.orDivider,
+                  isLoading: state.isSubmitting,
+                  onPressed: context.read<AuthCubit>().loginWithGoogle,
+                ),
+              ),
             ],
           ),
         ),

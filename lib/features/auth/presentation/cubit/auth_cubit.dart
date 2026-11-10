@@ -37,6 +37,8 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  Future<void> loginWithGoogle() => _submit(_repository.loginWithGoogle);
+
   Future<void> logout() async {
     await _repository.logout();
     emit(const AuthState(status: AuthStatus.unauthenticated));
@@ -52,6 +54,10 @@ class AuthCubit extends Cubit<AuthState> {
       final user = await action();
       emit(AuthState(status: AuthStatus.authenticated, user: user));
     } on AppException catch (exception) {
+      if (exception.error == AppError.signInCancelled) {
+        emit(state.copyWith(isSubmitting: false, clearError: true));
+        return;
+      }
       emit(
         state.copyWith(
           status: AuthStatus.unauthenticated,

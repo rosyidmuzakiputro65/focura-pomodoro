@@ -90,6 +90,10 @@ class LocalAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<AppUser> loginWithGoogle() async =>
+      throw const AuthException(AppError.googleSignInUnavailable);
+
+  @override
   Future<void> logout() => _session.delete(_currentUserKey);
 
   Future<AppUser> _saveUser({

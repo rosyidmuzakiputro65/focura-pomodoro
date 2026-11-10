@@ -18,6 +18,12 @@ dependencies:
   # State management (Cubit / BLoC)
   flutter_bloc: ^9.1.1
   equatable: ^2.0.7
+  # Backend cloud: Firebase Authentication + Cloud Firestore
+  firebase_core: ^5.1.0
+  firebase_auth: ^7.0.1
+  cloud_firestore: ^7.1.0
+  # Login dengan akun Google di Android (web memakai popup Firebase)
+  google_sign_in: ^7.0.0
   # External public API (DummyJSON quotes)
   http: ^1.2.2
   # Database lokal (Android, iOS, Web, Desktop)

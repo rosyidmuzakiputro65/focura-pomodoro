@@ -63,6 +63,8 @@ abstract class AppStrings {
   String get noAccount;
   String get register;
   String fillDemoAccount(String email);
+  String get signInWithGoogle;
+  String get orDivider;
   String get createAccount;
   String get registerSubtitle;
   String get fullNameHint;

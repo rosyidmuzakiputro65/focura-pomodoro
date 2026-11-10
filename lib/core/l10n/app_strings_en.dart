@@ -65,6 +65,10 @@ class AppStringsEn extends AppStrings {
   @override
   String fillDemoAccount(String email) => 'Use demo account ($email)';
   @override
+  String get signInWithGoogle => 'Continue with Google';
+  @override
+  String get orDivider => 'or';
+  @override
   String get createAccount => 'Create account';
   @override
   String get registerSubtitle => 'Start your focus journey with Focura.';
@@ -382,6 +386,15 @@ class AppStringsEn extends AppStrings {
     AppError.wrongCredentials => 'Incorrect email or password',
     AppError.notOwner => "You don't have permission to change this",
     AppError.notLoggedIn => 'Please sign in first',
+    AppError.tooManyAttempts => 'Too many attempts. Please wait and try again',
+    AppError.permissionDenied => 'Database access was denied',
+    AppError.signInCancelled => 'Sign-in was cancelled',
+    AppError.googleSignInFailed =>
+      'Google sign-in failed. Try again or use email',
+    AppError.googleSignInUnavailable =>
+      'Google sign-in needs a Firebase connection',
+    AppError.authProviderDisabled =>
+      'Email/Password sign-in is not enabled in the Firebase Console',
     AppError.taskNotFound => 'Task not found',
     AppError.networkTimeout => 'The server took too long to respond',
     AppError.networkServer => 'The server has a problem, try again later',

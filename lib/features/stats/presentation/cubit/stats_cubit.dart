@@ -69,7 +69,12 @@ class StatsCubit extends Cubit<StatsState> {
   Future<void> refresh() async {
     final userId = state.userId;
     if (userId == null) return;
-    final sessions = await _repository.getSessions(userId);
+    final List<FocusSessionRecord> sessions;
+    try {
+      sessions = await _repository.getSessions(userId);
+    } on AppException {
+      return; // tetap tampilkan statistik terakhir
+    }
     final today = AppDateUtils.startOfDay(_now());
 
     final todaySessions = sessions

@@ -32,7 +32,7 @@
           ]
         }
       },
-      "command": "flutter build apk --release > _logs\\build_apk.txt 2>&1 & echo SELESAI > _logs\\build_done.txt",
+      "command": "flutter build apk --release --dart-define-from-file=firebase_config.json > _logs\\build_apk.txt 2>&1 & echo SELESAI > _logs\\build_done.txt",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -42,7 +42,7 @@
     {
       "label": "Focura: jalankan di browser (localhost:8080)",
       "type": "shell",
-      "command": "flutter run -d web-server --web-port=8080 --release",
+      "command": "flutter run -d web-server --web-port=8080 --release --dart-define-from-file=firebase_config.json",
       "problemMatcher": [],
       "isBackground": true,
       "presentation": {
@@ -100,7 +100,7 @@
           ]
         }
       },
-      "command": "flutter build web --release > _logs\\build_web.txt 2>&1 & echo SELESAI > _logs\\build_web_done.txt",
+      "command": "flutter build web --release --dart-define-from-file=firebase_config.json > _logs\\build_web.txt 2>&1 & echo SELESAI > _logs\\build_web_done.txt",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -148,7 +148,7 @@
     {
       "label": "Focura: bagikan ke HP/laptop lain (Wi-Fi sama, port 8090)",
       "type": "shell",
-      "command": "flutter run -d web-server --web-hostname 0.0.0.0 --web-port 8090 --release",
+      "command": "flutter run -d web-server --web-hostname 0.0.0.0 --web-port 8090 --release --dart-define-from-file=firebase_config.json",
       "problemMatcher": [],
       "isBackground": true,
       "presentation": {
@@ -188,6 +188,102 @@
         }
       },
       "command": "(git init -b main & git add -A & git commit -m \"Focura: aplikasi Pomodoro (auth, CRUD tugas, API, notifikasi, musik, terjemahan)\" -m \"Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\" -m \"Claude-Session: https://claude.ai/code/session_013mNVAqEcbUq1vqsPv4Xa6m\" & git log --oneline -3 & git count-objects -vH & git ls-files) > _logs\\git_commit.txt 2>&1 & echo SELESAI > _logs\\git_commit_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: push ke GitHub",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "powershell.exe",
+          "args": [
+            "-NoProfile",
+            "-Command"
+          ]
+        }
+      },
+      "command": "git remote remove origin 2>$null; git remote add origin https://github.com/rosyidmuzakiputro65/focura-pomodoro.git; git push -u origin main 2>&1 | Tee-Object -FilePath _logs\\push.txt; git remote -v | Out-File -Append _logs\\push.txt; 'SELESAI' | Out-File _logs\\push_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      }
+    },
+    {
+      "label": "Focura: build App Bundle (Play Store)",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "flutter build appbundle --release --dart-define-from-file=firebase_config.json > _logs\\build_aab.txt 2>&1 & echo SELESAI > _logs\\build_aab_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: cek alat Firebase",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "(echo NODE & node -v & echo NPM & npm -v & echo FIREBASE & firebase --version & echo DART & dart --version & echo FLUTTERFIRE & flutterfire --version & echo PUBCACHE & dir %LOCALAPPDATA%\\Pub\\Cache\\bin) > _logs\\fbtools.txt 2>&1 & echo SELESAI > _logs\\fbtools_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: commit & push pembaruan",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "powershell.exe",
+          "args": [
+            "-NoProfile",
+            "-Command"
+          ]
+        }
+      },
+      "command": "git add -A; git commit -m 'Integrasi Firebase Authentication & Cloud Firestore, musik fokus, terjemahan kutipan' -m 'Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>' -m 'Claude-Session: https://claude.ai/code/session_013mNVAqEcbUq1vqsPv4Xa6m' 2>&1 | Out-File _logs\\push2.txt; git push 2>&1 | Out-File -Append _logs\\push2.txt; git status --short | Out-File -Append _logs\\push2.txt; git log --oneline -3 | Out-File -Append _logs\\push2.txt; 'SELESAI' | Out-File _logs\\push2_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: ambil SHA-1/SHA-256 (debug keystore)",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "powershell.exe",
+          "args": [
+            "-NoProfile",
+            "-Command"
+          ]
+        }
+      },
+      "command": "$out='_logs\\sha.txt'; $cfg = flutter config --list 2>&1 | Out-String; $jdk = ($cfg -split \"`n\" | Where-Object { $_ -match 'jdk-dir:\\s*(.+)$' } | ForEach-Object { $Matches[1].Trim() }) | Select-Object -First 1; $cands = @(); if ($jdk) { $cands += (Join-Path $jdk 'bin\\keytool.exe') }; $cands += @('C:\\Program Files\\Android\\Android Studio\\jbr\\bin\\keytool.exe','C:\\Program Files\\Android\\Android Studio\\jre\\bin\\keytool.exe'); $kt = $cands | Where-Object { Test-Path $_ } | Select-Object -First 1; if (-not $kt) { $kt = (Get-ChildItem -Path 'C:\\Program Files','C:\\Program Files (x86)',\"$env:LOCALAPPDATA\\Programs\",\"$env:USERPROFILE\\.gradle\",\"$env:USERPROFILE\\.jdks\",'D:\\' -Filter keytool.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1).FullName }; \"CONFIG:`n$cfg`nKEYTOOL: $kt\" | Out-File $out; if ($kt) { & $kt -list -v -keystore \"$env:USERPROFILE\\.android\\debug.keystore\" -alias androiddebugkey -storepass android -keypass android 2>&1 | Out-File -Append $out }; 'SELESAI' | Out-File _logs\\sha_done.txt",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

@@ -14,7 +14,8 @@ sesi fokus 25 menit, istirahat pendek 5 menit, dan istirahat panjang 15 menit se
 ## Fitur
 
 - **Splash & Onboarding** (3 halaman, hanya muncul sekali).
-- **Register, Login, Logout** — password di-hash SHA-256 + salt, sesi tersimpan.
+- **Register, Login, Logout** dengan **Firebase Authentication** (email & password). Tanpa konfigurasi Firebase, aplikasi otomatis memakai database lokal (password di-hash SHA-256 + salt).
+- **Database cloud Cloud Firestore** — tugas & riwayat sesi tersimpan per pengguna (`users/{uid}/tasks`, `users/{uid}/sessions`), bisa dibuka dari perangkat mana pun, tetap jalan offline (cache Firestore) dan divalidasi di aplikasi **dan** di server (`firestore.rules`).
 - **Timer Pomodoro** — mode fokus / istirahat pendek / istirahat panjang, Start, Pause, Resume, Reset, Skip, siklus 4 sesi.
 - **Informasi saat sesi selesai** — dialog di dalam aplikasi + **local notification** terjadwal (tetap muncul walau aplikasi di background).
 - **Task management (CRUD)** — tambah, lihat (filter Semua/Berjalan/Selesai), edit, hapus (menu atau geser), estimasi & progres pomodoro per tugas.
@@ -35,14 +36,14 @@ Akun demo: **demo@focura.app / demo123** (tombol "Isi akun demo" di halaman logi
 | 2 | Repositori GitHub publik | Lihat bagian *Upload ke GitHub* |
 | 3 | `.gitignore` standar | `build/`, `.env`, `key.properties`, `*.jks`, kredensial Firebase diabaikan |
 | 4 | > 2 halaman, navigasi jelas, responsif | Splash, Onboarding, Login, Register, Timer, Tugas, Form Tugas, Motivasi, Profil — `lib/core/router/app_routes.dart` |
-| 5 | Login & Logout | `features/auth` (`AuthCubit`, `LocalAuthRepository`) |
+| 5 | Login & Logout | Firebase Authentication — `features/auth` (`AuthCubit`, `FirebaseAuthRepository`) |
 | 6 | Business logic terpisah dari UI | Struktur `data / domain / presentation` + Cubit (`flutter_bloc`) |
-| 7 | CRUD | `features/tasks` (`TaskCubit`, `LocalTaskRepository`) |
+| 7 | CRUD | Cloud Firestore — `features/tasks` (`TaskCubit`, `FirestoreTaskRepository`) |
 | 8 | External Public API | DummyJSON Quotes + MyMemory Translation — `features/quotes/data/datasources/` |
 | 9 | Library pihak ketiga | audioplayers, flutter_localizations, flutter_bloc, equatable, http, hive_ce, crypto, flutter_local_notifications, timezone |
 | 10 | Local notification | `core/services/notification_service_local.dart` |
 | 11 | Pagination / lazy loading / caching | `QuoteCubit.loadMore()` (limit & skip) + `HiveQuoteCache` |
-| 12 | Validasi sebelum disimpan | `core/utils/validators.dart` dipakai di form **dan** di repository sebelum menulis ke database |
+| 12 | Validasi sebelum disimpan | `core/utils/validators.dart` di form + repository, lalu Firestore Security Rules (`firestore.rules`) di server |
 | 13 | Build & upload | Lihat bagian *Build rilis* |
 
 ## Arsitektur
@@ -150,3 +151,18 @@ dengan `s.error(kode)`. Jika ada kunci yang lupa diterjemahkan, `flutter analyze
 - **Musik tidak terdengar di web** → klik dulu di halaman (aturan autoplay browser), pastikan volume di kartu musik tidak 0,
   dan jalankan ulang server setelah mengubah kode (mode release tidak memuat ulang otomatis).
 - **Terjemahan "Coba terjemahkan lagi"** → kuota harian MyMemory habis atau sedang offline; teks asli tetap tampil.
+
+## Konfigurasi Firebase
+
+Konfigurasi dibaca saat build dari `firebase_config.json` (tidak di-commit; contoh: `firebase_config.example.json`):
+
+```bash
+flutter run --dart-define-from-file=firebase_config.json
+flutter build apk --release --dart-define-from-file=firebase_config.json
+```
+
+Langkah di Firebase Console (project `focura-pomodoro`):
+1. Project settings → Add app → **Web** dan **Android** (`com.unida.focura`), salin nilainya ke `firebase_config.json`.
+2. Authentication → Sign-in method → aktifkan **Email/Password**.
+3. Firestore Database → Create database (asia-southeast2) → tab **Rules** → tempel isi `firestore.rules` → Publish.
+4. GitHub Pages: repo Settings → Secrets and variables → Actions → secret **`FIREBASE_CONFIG_JSON`** berisi isi `firebase_config.json`.

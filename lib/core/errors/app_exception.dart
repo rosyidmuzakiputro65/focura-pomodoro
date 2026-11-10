@@ -28,6 +28,12 @@ enum AppError {
   wrongCredentials,
   notOwner,
   notLoggedIn,
+  tooManyAttempts,
+  permissionDenied,
+  authProviderDisabled,
+  signInCancelled,
+  googleSignInFailed,
+  googleSignInUnavailable,
   // Data
   taskNotFound,
   // Jaringan
