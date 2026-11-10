@@ -1,0 +1,44 @@
+name: flutter_application_1
+description: "Focura - aplikasi Pomodoro timer dan manajemen tugas (Kelompok 10, Teknik Informatika UNIDA Gontor)."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Terjemahan widget bawaan (tombol, dialog, dsb.) Indonesia & English
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  # State management (Cubit / BLoC)
+  flutter_bloc: ^9.1.1
+  equatable: ^2.0.7
+  # External public API (DummyJSON quotes)
+  http: ^1.2.2
+  # Database lokal (Android, iOS, Web, Desktop)
+  hive_ce: ^2.11.0
+  hive_ce_flutter: ^2.3.0
+  # Hash password sebelum disimpan
+  crypto: ^3.0.6
+  # Pemutar musik fokus (Android, iOS, Web, Windows, macOS, Linux)
+  audioplayers: ^6.1.0
+  # Local notification
+  flutter_local_notifications: ^19.4.0
+  timezone: ^0.10.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Musik penenang orisinal (dibuat dengan tool/generate_focus_music.py)
+  assets:
+    - assets/audio/

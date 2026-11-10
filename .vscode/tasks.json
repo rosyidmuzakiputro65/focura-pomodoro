@@ -1,0 +1,198 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Focura: cek semua (pub get + analyze + test)",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "flutter --version > _logs\\version.txt 2>&1 & flutter pub get > _logs\\pub.txt 2>&1 & flutter analyze > _logs\\analyze.txt 2>&1 & flutter test > _logs\\test.txt 2>&1 & echo SELESAI > _logs\\done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: build APK release",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "flutter build apk --release > _logs\\build_apk.txt 2>&1 & echo SELESAI > _logs\\build_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: jalankan di browser (localhost:8080)",
+      "type": "shell",
+      "command": "flutter run -d web-server --web-port=8080 --release",
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: analyze + test saja",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "del /q _logs\\done.txt 2>nul & flutter analyze > _logs\\analyze.txt 2>&1 & flutter test > _logs\\test.txt 2>&1 & echo SELESAI > _logs\\done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: flutter doctor + devices",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "flutter doctor -v > _logs\\doctor.txt 2>&1 & flutter devices > _logs\\devices.txt 2>&1 & echo SELESAI > _logs\\doctor_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: build web release",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "flutter build web --release > _logs\\build_web.txt 2>&1 & echo SELESAI > _logs\\build_web_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: cek koneksi ke server Google (untuk build APK)",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "(nslookup dl.google.com & nslookup dl.google.com 8.8.8.8 & curl -sS -I https://dl.google.com/dl/android/maven2/index.html) > _logs\\network.txt 2>&1 & echo SELESAI > _logs\\network_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: cek alamat IP laptop",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "ipconfig > _logs\\ipconfig.txt 2>&1 & echo SELESAI > _logs\\ip_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: bagikan ke HP/laptop lain (Wi-Fi sama, port 8090)",
+      "type": "shell",
+      "command": "flutter run -d web-server --web-hostname 0.0.0.0 --web-port 8090 --release",
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: cek git",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "(git --version & where gh & git config --global user.name & git config --global user.email & git config --global credential.helper & git status) > _logs\\git.txt 2>&1 & echo SELESAI > _logs\\git_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Focura: git commit pertama",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "command": "(git init -b main & git add -A & git commit -m \"Focura: aplikasi Pomodoro (auth, CRUD tugas, API, notifikasi, musik, terjemahan)\" -m \"Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\" -m \"Claude-Session: https://claude.ai/code/session_013mNVAqEcbUq1vqsPv4Xa6m\" & git log --oneline -3 & git count-objects -vH & git ls-files) > _logs\\git_commit.txt 2>&1 & echo SELESAI > _logs\\git_commit_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}
