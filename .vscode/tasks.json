@@ -289,6 +289,25 @@
         "reveal": "always",
         "panel": "dedicated"
       }
+    },
+    {
+      "label": "Focura: push README",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "powershell.exe",
+          "args": [
+            "-NoProfile",
+            "-Command"
+          ]
+        }
+      },
+      "command": "git add README.md .vscode/tasks.json; git commit -m 'Perbarui README sesuai fitur terbaru (Firebase, login Google, link web)' -m 'Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>' -m 'Claude-Session: https://claude.ai/code/session_013mNVAqEcbUq1vqsPv4Xa6m' 2>&1 | Out-File _logs\\deploy.txt; git push 2>&1 | Out-File -Append _logs\\deploy.txt; 'SELESAI' | Out-File _logs\\deploy_done.txt",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
     }
   ]
 }
